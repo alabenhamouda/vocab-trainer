@@ -1,0 +1,15 @@
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/bin/Debug/net10.0/VocabTrainer.Application.deps.json
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/bin/Debug/net10.0/VocabTrainer.Application.dll
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/bin/Debug/net10.0/VocabTrainer.Application.pdb
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/bin/Debug/net10.0/VocabTrainer.Domain.dll
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/bin/Debug/net10.0/VocabTrainer.Domain.pdb
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.csproj.AssemblyReference.cache
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.AssemblyInfoInputs.cache
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.AssemblyInfo.cs
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.csproj.CoreCompileInputs.cache
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTra.2B0AF9A7.Up2Date
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.dll
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/refint/VocabTrainer.Application.dll
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/VocabTrainer.Application.pdb
+/home/alabh/repos/vocab-trainer/VocabTrainer.Application/obj/Debug/net10.0/ref/VocabTrainer.Application.dll

@@ -1,0 +1,15 @@
+2026-01-30T16:35:01.7597773+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.8.2+3f3895006fbd911d9b09cf9cafebc5f6cb7dd10d
+2026-01-30T16:35:01.7721593+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-01-30T16:35:01.7740887+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-01-30T16:35:01.7741000+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 16:35:01.727
+2026-01-30T16:35:01.7747706+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 42678
+2026-01-30T16:35:01.7748126+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: ubuntu.24.04-x64 - .NET 10.0.0
+2026-01-30T16:35:01.7749439+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: /usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.0/System.Private.CoreLib.dll
+2026-01-30T16:35:01.7749795+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-01-30T16:35:01.7750759+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: /home/alabh/repos/vocab-trainer/VocabTrainer.Tests/bin/Debug/net10.0/VocabTrainer.Tests.dll
+2026-01-30T16:35:01.7753037+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory /home/alabh/repos/vocab-trainer/VocabTrainer.Tests/bin/Debug/net10.0/Log --client-port 46251'
+2026-01-30T16:35:01.7794909+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-01-30T16:35:01.8000437+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-01-30T16:35:01.8144509+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-01-30T16:35:02.0898171+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.0.1' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-01-30T16:35:02.0955045+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.0.1+9214bef154 (64-bit .NET 10.0.0)
