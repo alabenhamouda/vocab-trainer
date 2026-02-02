@@ -4,7 +4,7 @@ using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Application.VocabEntries.Commands;
 
-public class CreateExpressionCommandHandler(VocabTrainerDbContext dbContext)
+public class CreateExpressionCommandHandler(IVocabTrainerDbContext dbContext)
     : IRequestHandler<CreateExpressionCommand, Guid>
 {
     public async Task<Guid> Handle(

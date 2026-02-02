@@ -4,7 +4,7 @@ using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Application.VocabEntries.Commands;
 
-public class CreateNounCommandHandler(VocabTrainerDbContext dbContext)
+public class CreateNounCommandHandler(IVocabTrainerDbContext dbContext)
     : IRequestHandler<CreateNounCommand, Guid>
 {
     public async Task<Guid> Handle(CreateNounCommand request, CancellationToken cancellationToken)

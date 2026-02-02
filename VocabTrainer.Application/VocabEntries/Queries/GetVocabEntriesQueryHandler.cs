@@ -5,7 +5,7 @@ using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Application.VocabEntries.Queries;
 
-public class GetVocabEntriesQueryHandler(VocabTrainerDbContext dbContext)
+public class GetVocabEntriesQueryHandler(IVocabTrainerDbContext dbContext)
     : IRequestHandler<GetVocabEntriesQuery, List<VocabEntry>>
 {
     public async Task<List<VocabEntry>> Handle(
