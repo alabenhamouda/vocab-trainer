@@ -18,9 +18,10 @@ public class Noun : VocabEntry
         Gender gender,
         string? pluralForm = null,
         bool isSingularOnly = false,
-        bool isPluralOnly = false
+        bool isPluralOnly = false,
+        string? example = null
     )
-        : base(term, definition, englishTranslation, imageUrl)
+        : base(term, definition, englishTranslation, imageUrl, example)
     {
         if (isSingularOnly && isPluralOnly)
             throw new ArgumentException("A noun cannot be both singular-only and plural-only.");

@@ -161,3 +161,4 @@ Naming consistency matters more than clever abstractions.
 ## Code Style & Conventions
 
 - **Primary Constructors**: Use C# 12 primary constructors when the constructor body would be empty or only contains simple property assignments. If validation or complex logic is required, use a standard constructor.
+- **Code Formatting**: After making edits, always run `csharpier format .` to keep the code formatted consistently across the solution.

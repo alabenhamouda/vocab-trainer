@@ -4,5 +4,6 @@ public class Expression(
     string term,
     string? definition,
     string? englishTranslation,
-    string? imageUrl
-) : VocabEntry(term, definition, englishTranslation, imageUrl) { }
+    string? imageUrl,
+    string? example = null
+) : VocabEntry(term, definition, englishTranslation, imageUrl, example) { }

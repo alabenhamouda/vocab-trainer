@@ -11,12 +11,22 @@ var migrations = builder
 
 var cache = builder.AddRedis("cache");
 
-var apiService = builder
-    .AddProject<Projects.VocabTrainer_ApiService>("apiservice")
+var groqApiKey = builder.AddParameter("groq-api-key", secret: true);
+
+var seeding = builder
+    .AddProject<Projects.VocabTrainer_SeedingService>("seeding")
     .WithReference(vocabDb)
     .WaitFor(vocabDb)
     .WithReference(migrations)
     .WaitForCompletion(migrations)
+    .WithEnvironment("Groq__ApiKey", groqApiKey);
+
+var apiService = builder
+    .AddProject<Projects.VocabTrainer_ApiService>("apiservice")
+    .WithReference(vocabDb)
+    .WaitFor(vocabDb)
+    .WithReference(seeding)
+    .WaitForCompletion(seeding)
     .WithHttpHealthCheck("/health");
 
 builder

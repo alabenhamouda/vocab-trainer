@@ -20,23 +20,27 @@ namespace VocabTrainer.Infrastructure.Migrations
                     Definition = table.Column<string>(type: "text", nullable: true),
                     EnglishTranslation = table.Column<string>(type: "text", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    EntryType = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
+                    EntryType = table.Column<string>(
+                        type: "character varying(13)",
+                        maxLength: 13,
+                        nullable: false
+                    ),
                     Gender = table.Column<int>(type: "integer", nullable: true),
                     PluralForm = table.Column<string>(type: "text", nullable: true),
                     IsSingularOnly = table.Column<bool>(type: "boolean", nullable: true),
-                    IsPluralOnly = table.Column<bool>(type: "boolean", nullable: true)
+                    IsPluralOnly = table.Column<bool>(type: "boolean", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VocabEntries", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "VocabEntries");
+            migrationBuilder.DropTable(name: "VocabEntries");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VocabTrainer.Infrastructure.Data;
@@ -11,9 +12,11 @@ using VocabTrainer.Infrastructure.Data;
 namespace VocabTrainer.Infrastructure.Migrations
 {
     [DbContext(typeof(VocabTrainerDbContext))]
-    partial class VocabTrainerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260311045042_AddCourseLessonDeckEntities")]
+    partial class AddCourseLessonDeckEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,9 +148,6 @@ namespace VocabTrainer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)");
-
-                    b.Property<string>("Example")
-                        .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");

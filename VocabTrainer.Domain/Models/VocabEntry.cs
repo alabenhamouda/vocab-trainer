@@ -9,12 +9,15 @@ public abstract class VocabEntry
     public string? Definition { get; private set; } // German definition from DW
     public string? EnglishTranslation { get; private set; } // Translation for ease of understanding
     public string? ImageUrl { get; private set; } // Optional image aid
+    public string? Example { get; private set; } // Example sentence using the term
+    public Guid? LessonId { get; private set; } // Nullable: vocab entries can be standalone
 
     protected VocabEntry(
         string term,
         string? definition,
         string? englishTranslation,
-        string? imageUrl
+        string? imageUrl,
+        string? example = null
     )
     {
         if (string.IsNullOrWhiteSpace(term))
@@ -25,5 +28,6 @@ public abstract class VocabEntry
         Definition = definition;
         EnglishTranslation = englishTranslation;
         ImageUrl = imageUrl;
+        Example = example;
     }
 }

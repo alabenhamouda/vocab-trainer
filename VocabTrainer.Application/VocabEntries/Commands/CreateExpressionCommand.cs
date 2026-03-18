@@ -6,5 +6,6 @@ public record CreateExpressionCommand(
     string Term,
     string? Definition,
     string? EnglishTranslation,
-    string? ImageUrl = null
+    string? ImageUrl = null,
+    string? Example = null
 ) : IRequest<Guid>;

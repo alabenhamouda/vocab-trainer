@@ -11,5 +11,6 @@ public record CreateNounCommand(
     string? PluralForm,
     bool IsSingularOnly,
     bool IsPluralOnly,
-    string? ImageUrl = null
+    string? ImageUrl = null,
+    string? Example = null
 ) : IRequest<Guid>;

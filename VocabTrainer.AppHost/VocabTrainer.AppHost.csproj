@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../VocabTrainer.MigrationService/VocabTrainer.MigrationService.csproj" />
+    <ProjectReference Include="../VocabTrainer.SeedingService/VocabTrainer.SeedingService.csproj" />
     <ProjectReference Include="..\VocabTrainer.ApiService\VocabTrainer.ApiService.csproj" />
     <ProjectReference Include="..\VocabTrainer.Web\VocabTrainer.Web.csproj" />
   </ItemGroup>
@@ -16,5 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.Redis" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ollama" />
   </ItemGroup>
 </Project>

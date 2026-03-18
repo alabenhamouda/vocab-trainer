@@ -17,7 +17,8 @@ public class CreateNounCommandHandler(IVocabTrainerDbContext dbContext)
             request.Gender,
             request.PluralForm,
             request.IsSingularOnly,
-            request.IsPluralOnly
+            request.IsPluralOnly,
+            request.Example
         );
 
         dbContext.Nouns.Add(noun);

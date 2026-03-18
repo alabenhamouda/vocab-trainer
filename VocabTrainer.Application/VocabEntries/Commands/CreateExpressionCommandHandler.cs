@@ -16,7 +16,8 @@ public class CreateExpressionCommandHandler(IVocabTrainerDbContext dbContext)
             request.Term,
             request.Definition,
             request.EnglishTranslation,
-            request.ImageUrl
+            request.ImageUrl,
+            request.Example
         );
 
         dbContext.Expressions.Add(expression);
