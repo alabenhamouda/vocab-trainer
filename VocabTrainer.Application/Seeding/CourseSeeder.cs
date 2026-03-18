@@ -21,14 +21,12 @@ public class CourseSeeder(
             cancellationToken
         );
 
-        if (courseExists)
+        if (!courseExists)
         {
-            return;
+            var course = await courseProvider.FetchAsync(cancellationToken);
+            dbContext.Courses.Add(course);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
-
-        var course = await courseProvider.FetchAsync(cancellationToken);
-        dbContext.Courses.Add(course);
-        await dbContext.SaveChangesAsync(cancellationToken);
 
         var unclassifiedEntries = await dbContext
             .VocabEntries.Include(v => v.Lesson)
@@ -58,12 +56,25 @@ public class CourseSeeder(
                     dbContext.VocabEntries.Add(replacement);
                 }
 
-                logger.LogInformation(
-                    "Classified batch {Batch}/{Total} ({Count} entries)",
-                    i + 1,
-                    batches.Count,
-                    classified.Count
-                );
+                if (classified.Count < batch.Length)
+                {
+                    logger.LogInformation(
+                        "Batch {Batch}/{Total}: Classified {ClassifiedCount} out of {BatchSize} entries",
+                        i + 1,
+                        batches.Count,
+                        classified.Count,
+                        batch.Length
+                    );
+                }
+                else
+                {
+                    logger.LogInformation(
+                        "Classified batch {Batch}/{Total} ({Count} entries)",
+                        i + 1,
+                        batches.Count,
+                        classified.Count
+                    );
+                }
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {

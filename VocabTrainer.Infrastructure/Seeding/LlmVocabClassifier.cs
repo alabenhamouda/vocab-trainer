@@ -1,12 +1,14 @@
 using System.Text;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Logging;
 using VocabTrainer.Application.Seeding;
 using VocabTrainer.Domain.Enums;
 using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Infrastructure.Seeding;
 
-public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
+public class LlmVocabClassifier(IChatClient chatClient, ILogger<LlmVocabClassifier> logger)
+    : IVocabClassifier
 {
     private const string SystemPrompt = """
         You are a German language expert. You will receive a numbered list of German vocabulary entries, each with a name and a definition.
@@ -22,6 +24,7 @@ public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
            - IsPluralOnly: true if "nur Plural" is indicated
         3. Provide an English translation of the entry based on the provided definition.
         4. Provide one example sentence in German that uses the vocabulary entry in a way that illustrates the meaning defined.
+        5. Return the index of the entry, to make it easy to match classification results back to the original entries.
 
         Return the results in the exact same order as the input entries.
         """;
@@ -55,16 +58,17 @@ public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
 
         if (batch.Entries.Count != entries.Count)
         {
-            throw new InvalidOperationException(
-                $"LLM returned {batch.Entries.Count} results but expected {entries.Count}"
+            logger.LogWarning(
+                "LLM returned {ActualCount} results but expected {ExpectedCount}",
+                batch.Entries.Count,
+                entries.Count
             );
         }
 
         var classified = new List<VocabEntry>(entries.Count);
-        for (var i = 0; i < entries.Count; i++)
+        foreach (var classification in batch.Entries)
         {
-            var source = entries[i];
-            var classification = batch.Entries[i];
+            var source = entries[classification.Index - 1];
 
             classified.Add(
                 classification.Type == "Noun"

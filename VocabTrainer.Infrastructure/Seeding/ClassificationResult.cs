@@ -7,6 +7,7 @@ public class BatchClassificationResult
 
 public class ClassificationResult
 {
+    public required int Index { get; set; }
     public required string Type { get; set; } // "Noun" or "Expression"
     public string? Gender { get; set; } // "Masculine", "Feminine", "Neuter"
     public string? PluralForm { get; set; }
