@@ -25,8 +25,8 @@ var apiService = builder
     .AddProject<Projects.VocabTrainer_ApiService>("apiservice")
     .WithReference(vocabDb)
     .WaitFor(vocabDb)
-    .WithReference(seeding)
-    .WaitForCompletion(seeding)
+    .WithReference(migrations)
+    .WaitForCompletion(migrations)
     .WithHttpHealthCheck("/health");
 
 builder
