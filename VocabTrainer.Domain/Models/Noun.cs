@@ -21,7 +21,7 @@ public class Noun : VocabEntry
         bool isPluralOnly = false,
         string? example = null
     )
-        : base(term, definition, englishTranslation, imageUrl, example)
+        : base(term, definition, englishTranslation, imageUrl, example, isClassified: true)
     {
         if (isSingularOnly && isPluralOnly)
             throw new ArgumentException("A noun cannot be both singular-only and plural-only.");

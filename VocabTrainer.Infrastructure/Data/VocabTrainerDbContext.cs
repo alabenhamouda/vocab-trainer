@@ -49,7 +49,7 @@ public class VocabTrainerDbContext(DbContextOptions<VocabTrainerDbContext> optio
             entity.HasIndex(e => new { e.CourseId, e.Order }).IsUnique();
             entity
                 .HasMany(e => e.VocabEntries)
-                .WithOne()
+                .WithOne(v => v.Lesson)
                 .HasForeignKey(v => v.LessonId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);

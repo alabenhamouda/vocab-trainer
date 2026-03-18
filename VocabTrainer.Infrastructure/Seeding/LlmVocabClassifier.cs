@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.Extensions.AI;
 using VocabTrainer.Application.Seeding;
 using VocabTrainer.Domain.Enums;
@@ -8,10 +9,10 @@ namespace VocabTrainer.Infrastructure.Seeding;
 public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
 {
     private const string SystemPrompt = """
-        You are a German language expert. You will receive a German vocabulary entry with a name and a definition.
+        You are a German language expert. You will receive a numbered list of German vocabulary entries, each with a name and a definition.
 
-        Your tasks:
-        1. Classify the entry as either "Noun" or "Expression".
+        For each entry:
+        1. Classify as either "Noun" or "Expression".
            - A Noun is a single German noun (Substantiv). The name often contains gender hints like (m.), (f.), (n.) and plural info like (nur Singular), (nur Plural), or (Pl.: ...).
            - An Expression is everything else: verbs, adjectives, phrases, idioms, etc.
         2. If it is a Noun, extract:
@@ -21,42 +22,61 @@ public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
            - IsPluralOnly: true if "nur Plural" is indicated
         3. Provide an English translation of the entry based on the provided definition.
         4. Provide one example sentence in German that uses the vocabulary entry in a way that illustrates the meaning defined.
+
+        Return the results in the exact same order as the input entries.
         """;
 
-    public async Task<VocabEntry> ClassifyAsync(
-        string rawName,
-        string rawDefinition,
-        string? imageUrl,
+    public async Task<List<VocabEntry>> ClassifyBatchAsync(
+        IReadOnlyList<VocabEntry> entries,
         CancellationToken cancellationToken
     )
     {
-        var userMessage = $"Name: {rawName}\nDefinition: {rawDefinition}";
+        var sb = new StringBuilder();
+        for (var i = 0; i < entries.Count; i++)
+        {
+            sb.AppendLine($"Entry {i + 1}:");
+            sb.AppendLine($"  Name: {entries[i].Term}");
+            sb.AppendLine($"  Definition: {entries[i].Definition}");
+        }
 
-        var result = await chatClient.GetResponseAsync<ClassificationResult>(
+        var result = await chatClient.GetResponseAsync<BatchClassificationResult>(
             [
                 new ChatMessage(ChatRole.System, SystemPrompt),
-                new ChatMessage(ChatRole.User, userMessage),
+                new ChatMessage(ChatRole.User, sb.ToString()),
             ],
             cancellationToken: cancellationToken
         );
 
-        var classification =
+        var batch =
             result.Result
             ?? throw new InvalidOperationException(
-                $"LLM returned no structured result for '{rawName}'"
+                "LLM returned no structured result for batch classification"
             );
 
-        return classification.Type == "Noun"
-            ? CreateNoun(rawName, rawDefinition, imageUrl, classification)
-            : CreateExpression(rawName, rawDefinition, imageUrl, classification);
+        if (batch.Entries.Count != entries.Count)
+        {
+            throw new InvalidOperationException(
+                $"LLM returned {batch.Entries.Count} results but expected {entries.Count}"
+            );
+        }
+
+        var classified = new List<VocabEntry>(entries.Count);
+        for (var i = 0; i < entries.Count; i++)
+        {
+            var source = entries[i];
+            var classification = batch.Entries[i];
+
+            classified.Add(
+                classification.Type == "Noun"
+                    ? CreateNoun(source, classification)
+                    : CreateExpression(source, classification)
+            );
+        }
+
+        return classified;
     }
 
-    private static Noun CreateNoun(
-        string rawName,
-        string rawDefinition,
-        string? imageUrl,
-        ClassificationResult result
-    )
+    private static Noun CreateNoun(VocabEntry source, ClassificationResult result)
     {
         var gender = result.Gender switch
         {
@@ -67,10 +87,10 @@ public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
         };
 
         return new Noun(
-            rawName,
-            rawDefinition,
+            source.Term,
+            source.Definition,
             result.EnglishTranslation,
-            imageUrl,
+            source.ImageUrl,
             gender,
             result.PluralForm,
             result.IsSingularOnly,
@@ -79,19 +99,15 @@ public class LlmVocabClassifier(IChatClient chatClient) : IVocabClassifier
         );
     }
 
-    private static Expression CreateExpression(
-        string rawName,
-        string rawDefinition,
-        string? imageUrl,
-        ClassificationResult result
-    )
+    private static Expression CreateExpression(VocabEntry source, ClassificationResult result)
     {
         return new Expression(
-            rawName,
-            rawDefinition,
+            source.Term,
+            source.Definition,
             result.EnglishTranslation,
-            imageUrl,
-            result.Example
+            source.ImageUrl,
+            result.Example,
+            isClassified: true
         );
     }
 }

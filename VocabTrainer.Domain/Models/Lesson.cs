@@ -32,4 +32,9 @@ public class Lesson
     {
         _vocabEntries.Add(entry);
     }
+
+    public void RemoveVocabEntry(VocabEntry entry)
+    {
+        _vocabEntries.Remove(entry);
+    }
 }

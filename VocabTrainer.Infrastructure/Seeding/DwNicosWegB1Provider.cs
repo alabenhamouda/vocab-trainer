@@ -7,8 +7,7 @@ using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Infrastructure.Seeding;
 
-public partial class DwNicosWegB1Provider(HttpClient httpClient, IVocabClassifier vocabClassifier)
-    : ICourseProvider
+public partial class DwNicosWegB1Provider(HttpClient httpClient) : ICourseProvider
 {
     private const int CourseId = 36519718;
     private const string CourseName = "Nicos Weg B1";
@@ -33,7 +32,7 @@ public partial class DwNicosWegB1Provider(HttpClient httpClient, IVocabClassifie
         var contentLinks = await FetchContentLinksAsync(cancellationToken);
 
         var order = 0;
-        foreach (var link in contentLinks.Take(1))
+        foreach (var link in contentLinks)
         {
             if (link.AdditionalInformation == "final_test")
                 continue;
@@ -47,13 +46,12 @@ public partial class DwNicosWegB1Provider(HttpClient httpClient, IVocabClassifie
                 var definition = StripHtml(glossary.Text);
                 var imageUrl = ResolveImageUrl(glossary);
 
-                var entry = await vocabClassifier.ClassifyAsync(
+                var entry = new Expression(
                     glossary.Name,
                     definition,
-                    imageUrl,
-                    cancellationToken
+                    englishTranslation: null,
+                    imageUrl
                 );
-
                 lesson.AddVocabEntry(entry);
             }
 
@@ -164,32 +162,36 @@ public partial class DwNicosWegB1Provider(HttpClient httpClient, IVocabClassifie
 
     #region DW API response DTOs
 
-    private record DwCoursePageResponse(DwCoursePageData Data);
+    private sealed record DwCoursePageResponse(DwCoursePageData Data);
 
-    private record DwCoursePageData(DwCoursePageContent Content);
+    private sealed record DwCoursePageData(DwCoursePageContent Content);
 
-    private record DwCoursePageContent(List<DwContentLink> ContentLinks);
+    private sealed record DwCoursePageContent(List<DwContentLink> ContentLinks);
 
-    private record DwContentLink(
+    private sealed record DwContentLink(
         long Id,
         string? AdditionalInformation,
         string? GroupName,
         DwLessonTarget Target
     );
 
-    private record DwLessonTarget(long Id, string ShortTitle, string? LearningTargetHeadline);
+    private sealed record DwLessonTarget(
+        long Id,
+        string ShortTitle,
+        string? LearningTargetHeadline
+    );
 
-    private record DwLessonVocabResponse(DwLessonVocabData Data);
+    private sealed record DwLessonVocabResponse(DwLessonVocabData Data);
 
-    private record DwLessonVocabData(DwLessonVocabContent Content);
+    private sealed record DwLessonVocabData(DwLessonVocabContent Content);
 
-    private record DwLessonVocabContent(List<DwGlossary> Glossaries);
+    private sealed record DwLessonVocabContent(List<DwGlossary> Glossaries);
 
-    private record DwGlossary(string Name, string Text, List<DwAudio>? Audios);
+    private sealed record DwGlossary(string Name, string Text, List<DwAudio>? Audios);
 
-    private record DwAudio(DwImage? MainContentImage);
+    private sealed record DwAudio(DwImage? MainContentImage);
 
-    private record DwImage(long Id, string StaticUrl);
+    private sealed record DwImage(long Id, string StaticUrl);
 
     #endregion
 }

@@ -1,5 +1,10 @@
 namespace VocabTrainer.Infrastructure.Seeding;
 
+public class BatchClassificationResult
+{
+    public required List<ClassificationResult> Entries { get; set; }
+}
+
 public class ClassificationResult
 {
     public required string Type { get; set; } // "Noun" or "Expression"

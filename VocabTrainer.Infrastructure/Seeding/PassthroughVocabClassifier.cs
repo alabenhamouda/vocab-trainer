@@ -5,14 +5,25 @@ namespace VocabTrainer.Infrastructure.Seeding;
 
 public class PassthroughVocabClassifier : IVocabClassifier
 {
-    public Task<VocabEntry> ClassifyAsync(
-        string rawName,
-        string rawDefinition,
-        string? imageUrl,
+    public Task<List<VocabEntry>> ClassifyBatchAsync(
+        IReadOnlyList<VocabEntry> entries,
         CancellationToken cancellationToken
     )
     {
-        VocabEntry entry = new Expression(rawName, rawDefinition, null, imageUrl);
-        return Task.FromResult(entry);
+        var result = entries
+            .Select(e =>
+                (VocabEntry)
+                    new Expression(
+                        e.Term,
+                        e.Definition,
+                        e.EnglishTranslation,
+                        e.ImageUrl,
+                        e.Example,
+                        isClassified: true
+                    )
+            )
+            .ToList();
+
+        return Task.FromResult(result);
     }
 }

@@ -4,10 +4,8 @@ namespace VocabTrainer.Application.Seeding;
 
 public interface IVocabClassifier
 {
-    Task<VocabEntry> ClassifyAsync(
-        string rawName,
-        string rawDefinition,
-        string? imageUrl,
+    Task<List<VocabEntry>> ClassifyBatchAsync(
+        IReadOnlyList<VocabEntry> entries,
         CancellationToken cancellationToken
     );
 }

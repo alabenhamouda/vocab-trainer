@@ -5,5 +5,6 @@ public class Expression(
     string? definition,
     string? englishTranslation,
     string? imageUrl,
-    string? example = null
-) : VocabEntry(term, definition, englishTranslation, imageUrl, example) { }
+    string? example = null,
+    bool isClassified = false
+) : VocabEntry(term, definition, englishTranslation, imageUrl, example, isClassified) { }

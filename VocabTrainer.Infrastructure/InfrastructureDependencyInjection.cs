@@ -3,6 +3,7 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OpenAI;
 using VocabTrainer.Infrastructure.Data;
 using VocabTrainer.Infrastructure.Seeding;
@@ -27,6 +28,9 @@ public static class InfrastructureDependencyInjection
             new OpenAIClientOptions { Endpoint = new Uri("https://api.groq.com/openai/v1") }
         );
 
-        builder.Services.AddChatClient(client.GetChatClient("openai/gpt-oss-20b").AsIChatClient());
+        builder
+            .Services.AddChatClient(client.GetChatClient("openai/gpt-oss-20b").AsIChatClient())
+            .UseOpenTelemetry()
+            .UseLogging();
     }
 }

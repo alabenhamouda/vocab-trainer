@@ -1,6 +1,4 @@
 using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using VocabTrainer.Application.Data;
 using VocabTrainer.Application.Seeding;
 
 namespace VocabTrainer.SeedingService;
@@ -21,21 +19,8 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime a
         try
         {
             using var scope = serviceProvider.CreateScope();
-            var courseProvider = scope.ServiceProvider.GetRequiredService<ICourseProvider>();
-            var dbContext = scope.ServiceProvider.GetRequiredService<IVocabTrainerDbContext>();
-
-            var course = await courseProvider.FetchAsync(stoppingToken);
-
-            var exists = await dbContext.Courses.AnyAsync(
-                c => c.Title == course.Title,
-                stoppingToken
-            );
-
-            if (!exists)
-            {
-                dbContext.Courses.Add(course);
-                await dbContext.SaveChangesAsync(stoppingToken);
-            }
+            var seeder = scope.ServiceProvider.GetRequiredService<CourseSeeder>();
+            await seeder.SeedAsync(stoppingToken);
         }
         catch (Exception ex)
         {
