@@ -16,18 +16,19 @@ public class CourseSeeder(
 
     public async Task SeedAsync(CancellationToken cancellationToken)
     {
-        var course = await courseProvider.FetchAsync(cancellationToken);
-
         var courseExists = await dbContext.Courses.AnyAsync(
-            c => c.Title == course.Title,
+            c => c.Title == courseProvider.CourseTitle,
             cancellationToken
         );
 
-        if (!courseExists)
+        if (courseExists)
         {
-            dbContext.Courses.Add(course);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            return;
         }
+
+        var course = await courseProvider.FetchAsync(cancellationToken);
+        dbContext.Courses.Add(course);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var unclassifiedEntries = await dbContext
             .VocabEntries.Include(v => v.Lesson)

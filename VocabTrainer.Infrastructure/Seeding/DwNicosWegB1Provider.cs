@@ -12,6 +12,8 @@ public partial class DwNicosWegB1Provider(HttpClient httpClient) : ICourseProvid
     private const int CourseId = 36519718;
     private const string CourseName = "Nicos Weg B1";
 
+    public string CourseTitle => CourseName;
+
     private const string CoursePageHash =
         "a5e023d88a6ba9d87206fbbba6311fc296eecddce87a30ad0568f4aad108c481";
 
