@@ -1,3 +1,4 @@
+using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,14 +8,18 @@ using VocabTrainer.Application.VocabEntries.Dtos;
 
 namespace VocabTrainer.Application.VocabEntries.Queries;
 
-public class GetNounsQueryHandler(IVocabTrainerDbContext dbContext)
-    : IRequestHandler<GetNounsQuery, PaginatedList<NounDto>>
+public class GetNounsQueryHandler(
+    IVocabTrainerDbContext dbContext,
+    IValidator<IPaginatedQuery> validator
+) : IRequestHandler<GetNounsQuery, PaginatedList<NounDto>>
 {
     public async Task<PaginatedList<NounDto>> Handle(
         GetNounsQuery request,
         CancellationToken cancellationToken
     )
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
         var totalCount = await dbContext.Nouns.CountAsync(cancellationToken);
 
         var items = await dbContext

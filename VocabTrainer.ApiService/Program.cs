@@ -1,8 +1,6 @@
-using MediatR;
 using Scalar.AspNetCore;
 using VocabTrainer.ApiService.Endpoints;
-using VocabTrainer.Application.Common;
-using VocabTrainer.Application.VocabEntries.Queries;
+using VocabTrainer.Application;
 using VocabTrainer.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,11 +13,7 @@ builder.AddInfrastructureServices();
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(GetVocabEntriesQuery).Assembly);
-    cfg.AddOpenBehavior(typeof(PaginationValidationBehavior<,>));
-});
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

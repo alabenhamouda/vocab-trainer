@@ -1,3 +1,4 @@
+using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,14 +8,18 @@ using VocabTrainer.Application.VocabEntries.Dtos;
 
 namespace VocabTrainer.Application.Courses.Queries;
 
-public class GetLessonVocabEntriesQueryHandler(IVocabTrainerDbContext dbContext)
-    : IRequestHandler<GetLessonVocabEntriesQuery, PaginatedList<VocabEntryDto>>
+public class GetLessonVocabEntriesQueryHandler(
+    IVocabTrainerDbContext dbContext,
+    IValidator<IPaginatedQuery> validator
+) : IRequestHandler<GetLessonVocabEntriesQuery, PaginatedList<VocabEntryDto>>
 {
     public async Task<PaginatedList<VocabEntryDto>> Handle(
         GetLessonVocabEntriesQuery request,
         CancellationToken cancellationToken
     )
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
         var query = dbContext
             .VocabEntries.AsNoTracking()
             .Where(v => v.LessonId == request.LessonId);

@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VocabTrainer.Application.VocabEntries.Commands;
@@ -15,8 +16,15 @@ public static class VocabEndpoints
             "/",
             async (ISender sender, int page = 1, int pageSize = 20) =>
             {
-                var entries = await sender.Send(new GetVocabEntriesQuery(page, pageSize));
-                return Results.Ok(entries);
+                try
+                {
+                    var entries = await sender.Send(new GetVocabEntriesQuery(page, pageSize));
+                    return Results.Ok(entries);
+                }
+                catch (ValidationException ex)
+                {
+                    return Results.ValidationProblem(ex.ToValidationErrors());
+                }
             }
         );
 
@@ -24,8 +32,15 @@ public static class VocabEndpoints
             "/nouns",
             async (ISender sender, int page = 1, int pageSize = 20) =>
             {
-                var nouns = await sender.Send(new GetNounsQuery(page, pageSize));
-                return Results.Ok(nouns);
+                try
+                {
+                    var nouns = await sender.Send(new GetNounsQuery(page, pageSize));
+                    return Results.Ok(nouns);
+                }
+                catch (ValidationException ex)
+                {
+                    return Results.ValidationProblem(ex.ToValidationErrors());
+                }
             }
         );
 
@@ -33,8 +48,15 @@ public static class VocabEndpoints
             "/expressions",
             async (ISender sender, int page = 1, int pageSize = 20) =>
             {
-                var expressions = await sender.Send(new GetExpressionsQuery(page, pageSize));
-                return Results.Ok(expressions);
+                try
+                {
+                    var expressions = await sender.Send(new GetExpressionsQuery(page, pageSize));
+                    return Results.Ok(expressions);
+                }
+                catch (ValidationException ex)
+                {
+                    return Results.ValidationProblem(ex.ToValidationErrors());
+                }
             }
         );
 

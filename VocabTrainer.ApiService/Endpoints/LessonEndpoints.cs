@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using VocabTrainer.Application.Courses.Queries;
 
@@ -13,10 +14,17 @@ public static class LessonEndpoints
             "/{lessonId:guid}/vocab",
             async (ISender sender, Guid lessonId, int page = 1, int pageSize = 20) =>
             {
-                var entries = await sender.Send(
-                    new GetLessonVocabEntriesQuery(lessonId, page, pageSize)
-                );
-                return Results.Ok(entries);
+                try
+                {
+                    var entries = await sender.Send(
+                        new GetLessonVocabEntriesQuery(lessonId, page, pageSize)
+                    );
+                    return Results.Ok(entries);
+                }
+                catch (ValidationException ex)
+                {
+                    return Results.ValidationProblem(ex.ToValidationErrors());
+                }
             }
         );
     }
