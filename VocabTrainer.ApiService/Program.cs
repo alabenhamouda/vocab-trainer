@@ -1,5 +1,7 @@
 using MediatR;
+using Scalar.AspNetCore;
 using VocabTrainer.ApiService.Endpoints;
+using VocabTrainer.Application.Common;
 using VocabTrainer.Application.VocabEntries.Queries;
 using VocabTrainer.Infrastructure;
 
@@ -14,8 +16,10 @@ builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(GetVocabEntriesQuery).Assembly)
-);
+{
+    cfg.RegisterServicesFromAssembly(typeof(GetVocabEntriesQuery).Assembly);
+    cfg.AddOpenBehavior(typeof(PaginationValidationBehavior<,>));
+});
 
 var app = builder.Build();
 
@@ -25,11 +29,15 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference();
 }
 
-app.MapGet("/", () => "VocabTrainer API is running.");
+app.MapGet("/", () => "VocabTrainer API is running.").ExcludeFromDescription();
 
 app.MapVocabEndpoints();
+app.MapCourseEndpoints();
+app.MapLessonEndpoints();
 
 app.MapDefaultEndpoints();
 

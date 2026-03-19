@@ -5,20 +5,23 @@ using VocabTrainer.Application.Common;
 using VocabTrainer.Application.Data;
 using VocabTrainer.Application.VocabEntries.Dtos;
 
-namespace VocabTrainer.Application.VocabEntries.Queries;
+namespace VocabTrainer.Application.Courses.Queries;
 
-public class GetVocabEntriesQueryHandler(IVocabTrainerDbContext dbContext)
-    : IRequestHandler<GetVocabEntriesQuery, PaginatedList<VocabEntryDto>>
+public class GetLessonVocabEntriesQueryHandler(IVocabTrainerDbContext dbContext)
+    : IRequestHandler<GetLessonVocabEntriesQuery, PaginatedList<VocabEntryDto>>
 {
     public async Task<PaginatedList<VocabEntryDto>> Handle(
-        GetVocabEntriesQuery request,
+        GetLessonVocabEntriesQuery request,
         CancellationToken cancellationToken
     )
     {
-        var totalCount = await dbContext.VocabEntries.CountAsync(cancellationToken);
-
-        var items = await dbContext
+        var query = dbContext
             .VocabEntries.AsNoTracking()
+            .Where(v => v.LessonId == request.LessonId);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
             .OrderBy(v => v.Term)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)

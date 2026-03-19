@@ -7,25 +7,25 @@ using VocabTrainer.Application.VocabEntries.Dtos;
 
 namespace VocabTrainer.Application.VocabEntries.Queries;
 
-public class GetVocabEntriesQueryHandler(IVocabTrainerDbContext dbContext)
-    : IRequestHandler<GetVocabEntriesQuery, PaginatedList<VocabEntryDto>>
+public class GetNounsQueryHandler(IVocabTrainerDbContext dbContext)
+    : IRequestHandler<GetNounsQuery, PaginatedList<NounDto>>
 {
-    public async Task<PaginatedList<VocabEntryDto>> Handle(
-        GetVocabEntriesQuery request,
+    public async Task<PaginatedList<NounDto>> Handle(
+        GetNounsQuery request,
         CancellationToken cancellationToken
     )
     {
-        var totalCount = await dbContext.VocabEntries.CountAsync(cancellationToken);
+        var totalCount = await dbContext.Nouns.CountAsync(cancellationToken);
 
         var items = await dbContext
-            .VocabEntries.AsNoTracking()
-            .OrderBy(v => v.Term)
+            .Nouns.AsNoTracking()
+            .OrderBy(n => n.Term)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
 
-        return new PaginatedList<VocabEntryDto>(
-            items.Adapt<List<VocabEntryDto>>(),
+        return new PaginatedList<NounDto>(
+            items.Adapt<List<NounDto>>(),
             totalCount,
             request.Page,
             request.PageSize

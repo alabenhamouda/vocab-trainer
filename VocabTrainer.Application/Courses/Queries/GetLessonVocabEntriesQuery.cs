@@ -2,8 +2,8 @@ using MediatR;
 using VocabTrainer.Application.Common;
 using VocabTrainer.Application.VocabEntries.Dtos;
 
-namespace VocabTrainer.Application.VocabEntries.Queries;
+namespace VocabTrainer.Application.Courses.Queries;
 
-public record GetVocabEntriesQuery(int Page = 1, int PageSize = 20)
+public record GetLessonVocabEntriesQuery(Guid LessonId, int Page = 1, int PageSize = 20)
     : IRequest<PaginatedList<VocabEntryDto>>,
         IPaginatedQuery;

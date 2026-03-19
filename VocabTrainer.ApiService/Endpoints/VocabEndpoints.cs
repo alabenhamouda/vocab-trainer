@@ -9,14 +9,32 @@ public static class VocabEndpoints
 {
     public static void MapVocabEndpoints(this IEndpointRouteBuilder app)
     {
-        var vocabGroup = app.MapGroup("/vocab");
+        var vocabGroup = app.MapGroup("/vocab").WithTags("Vocabulary");
 
         vocabGroup.MapGet(
             "/",
-            async (ISender sender) =>
+            async (ISender sender, int page = 1, int pageSize = 20) =>
             {
-                var entries = await sender.Send(new GetVocabEntriesQuery());
+                var entries = await sender.Send(new GetVocabEntriesQuery(page, pageSize));
                 return Results.Ok(entries);
+            }
+        );
+
+        vocabGroup.MapGet(
+            "/nouns",
+            async (ISender sender, int page = 1, int pageSize = 20) =>
+            {
+                var nouns = await sender.Send(new GetNounsQuery(page, pageSize));
+                return Results.Ok(nouns);
+            }
+        );
+
+        vocabGroup.MapGet(
+            "/expressions",
+            async (ISender sender, int page = 1, int pageSize = 20) =>
+            {
+                var expressions = await sender.Send(new GetExpressionsQuery(page, pageSize));
+                return Results.Ok(expressions);
             }
         );
 
