@@ -19,7 +19,8 @@ var seeding = builder
     .WaitFor(vocabDb)
     .WithReference(migrations)
     .WaitForCompletion(migrations)
-    .WithEnvironment("Groq__ApiKey", groqApiKey);
+    .WithEnvironment("Groq__ApiKey", groqApiKey)
+    .WithExplicitStart();
 
 var apiService = builder
     .AddProject<Projects.VocabTrainer_ApiService>("apiservice")
