@@ -1,5 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace VocabTrainer.Application.VocabEntries.Dtos;
 
+[JsonPolymorphic]
+[JsonDerivedType(typeof(NounDto))]
+[JsonDerivedType(typeof(ExpressionDto))]
 public record VocabEntryDto(
     Guid Id,
     string Term,

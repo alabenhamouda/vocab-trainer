@@ -9,6 +9,8 @@ public static class ApplicationDependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        MappingConfig.RegisterMappings();
+
         services.AddValidatorsFromAssemblyContaining<PaginatedQueryValidator>();
 
         services.AddMediatR(cfg =>
