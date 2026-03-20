@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using VocabTrainer.Application.Common;
 using VocabTrainer.Application.Data;
 using VocabTrainer.Application.VocabEntries.Dtos;
+using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Application.VocabEntries.Queries;
 
@@ -30,7 +31,16 @@ public class GetVocabEntriesQueryHandler(
             .ToListAsync(cancellationToken);
 
         return new PaginatedList<VocabEntryDto>(
-            items.Adapt<List<VocabEntryDto>>(),
+            [
+                .. items.Select(entry =>
+                    entry switch
+                    {
+                        Noun n => n.Adapt<NounDto>(),
+                        Expression e => e.Adapt<ExpressionDto>(),
+                        _ => entry.Adapt<VocabEntryDto>(),
+                    }
+                ),
+            ],
             totalCount,
             request.Page,
             request.PageSize

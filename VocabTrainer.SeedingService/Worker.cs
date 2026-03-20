@@ -19,8 +19,8 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime a
         try
         {
             using var scope = serviceProvider.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<CourseSeeder>();
-            await seeder.SeedAsync(stoppingToken);
+            var fixup = scope.ServiceProvider.GetRequiredService<VocabDataFixup>();
+            await fixup.FixupAsync(stoppingToken);
         }
         catch (Exception ex)
         {

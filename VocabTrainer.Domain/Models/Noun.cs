@@ -5,8 +5,19 @@ namespace VocabTrainer.Domain.Models;
 
 public class Noun : VocabEntry
 {
-    public Gender Gender { get; private set; }
-    public string? PluralForm { get; private set; }
+    public Gender Gender { get; set; }
+
+    public string? PluralForm
+    {
+        get;
+        set
+        {
+            if (IsSingularOnly && !string.IsNullOrEmpty(value))
+                throw new ArgumentException("Singular-only nouns cannot have a plural form.");
+            field = value;
+        }
+    }
+
     public bool IsSingularOnly { get; private set; }
     public bool IsPluralOnly { get; private set; }
 
@@ -26,12 +37,9 @@ public class Noun : VocabEntry
         if (isSingularOnly && isPluralOnly)
             throw new ArgumentException("A noun cannot be both singular-only and plural-only.");
 
-        if (isSingularOnly && !string.IsNullOrEmpty(pluralForm))
-            throw new ArgumentException("Singular-only nouns cannot have a plural form.");
-
         Gender = gender;
-        PluralForm = pluralForm;
         IsSingularOnly = isSingularOnly;
         IsPluralOnly = isPluralOnly;
+        PluralForm = pluralForm;
     }
 }

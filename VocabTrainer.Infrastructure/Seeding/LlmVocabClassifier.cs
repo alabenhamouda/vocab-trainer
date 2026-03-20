@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using VocabTrainer.Application.Seeding;
@@ -18,8 +19,8 @@ public class LlmVocabClassifier(IChatClient chatClient, ILogger<LlmVocabClassifi
            - A Noun is a single German noun (Substantiv). The name often contains gender hints like (m.), (f.), (n.) and plural info like (nur Singular), (nur Plural), or (Pl.: ...).
            - An Expression is everything else: verbs, adjectives, phrases, idioms, etc.
         2. If it is a Noun, extract:
-           - Gender: "Masculine" (der / m.), "Feminine" (die / f.), or "Neuter" (das / n.)
-           - PluralForm: the plural form if provided (e.g. from "Pl.: Agenturen")
+           - Gender: "Masculine" (der / m.), "Feminine" (die / f.), "Neuter" (das / n.), or "MasculineOrFeminine" when the entry has both a masculine and a feminine form (e.g. "Arbeitgeber, - / Arbeitgeberin, -nen").
+           - PluralForm: the plural form if provided. For MasculineOrFeminine nouns, provide both plural forms separated by '/' (masculine plural first, then feminine plural), e.g. "Arbeitgeber/Arbeitgeberinnen".
            - IsSingularOnly: true if "nur Singular" is indicated
            - IsPluralOnly: true if "nur Plural" is indicated
         3. Provide an English translation of the entry based on the provided definition.
@@ -80,18 +81,40 @@ public class LlmVocabClassifier(IChatClient chatClient, ILogger<LlmVocabClassifi
         return classified;
     }
 
+    private static readonly Regex GenderOnlyPattern = new(
+        @"\s*\((m\./f\.|[mfn]\.)\)",
+        RegexOptions.Compiled
+    );
+
+    private static readonly Regex GenderWithOtherInfoPattern = new(
+        @"\((m\./f\.|[mfn]\.),\s*",
+        RegexOptions.Compiled
+    );
+
+    private static string StripGenderIndication(string term)
+    {
+        var result = GenderOnlyPattern.Replace(term, "");
+        if (result != term)
+            return result;
+
+        return GenderWithOtherInfoPattern.Replace(term, "(");
+    }
+
     private static Noun CreateNoun(VocabEntry source, ClassificationResult result)
     {
+        var term = StripGenderIndication(source.Term);
+
         var gender = result.Gender switch
         {
             "Masculine" => Gender.Masculine,
             "Feminine" => Gender.Feminine,
             "Neuter" => Gender.Neuter,
+            "MasculineOrFeminine" => Gender.MasculineOrFeminine,
             _ => Gender.Masculine,
         };
 
         return new Noun(
-            source.Term,
+            term,
             source.Definition,
             result.EnglishTranslation,
             source.ImageUrl,

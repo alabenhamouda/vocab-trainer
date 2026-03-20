@@ -9,6 +9,7 @@ public static class SeedingDependencyInjection
     {
         services.AddScoped<IVocabClassifier, LlmVocabClassifier>();
         services.AddScoped<CourseSeeder>();
+        services.AddScoped<VocabDataFixup>();
 
         services.AddHttpClient<DwNicosWegB1Provider>(client =>
         {
