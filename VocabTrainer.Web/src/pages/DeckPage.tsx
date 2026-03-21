@@ -80,8 +80,8 @@ export default function DeckPage() {
             if (e.key === 'ArrowLeft') prev();
             if (e.key === 'ArrowRight') next();
         }
-        window.addEventListener('keydown', handleKey);
-        return () => window.removeEventListener('keydown', handleKey);
+        globalThis.addEventListener('keydown', handleKey);
+        return () => globalThis.removeEventListener('keydown', handleKey);
     }, [prev, next]);
 
     if (loading) return <div className="deck-page"><p className="loading">Loading…</p></div>;
