@@ -9,8 +9,6 @@ var migrations = builder
     .WithReference(vocabDb)
     .WaitFor(vocabDb);
 
-var cache = builder.AddRedis("cache");
-
 var groqApiKey = builder.AddParameter("groq-api-key", secret: true);
 
 var seeding = builder
@@ -31,12 +29,10 @@ var apiService = builder
     .WithHttpHealthCheck("/health");
 
 builder
-    .AddProject<Projects.VocabTrainer_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithHttpHealthCheck("/health")
-    .WithReference(cache)
-    .WaitFor(cache)
+    .AddViteApp("webfrontend", "../VocabTrainer.Web")
+    .WithNpm()
     .WithReference(apiService)
-    .WaitFor(apiService);
+    .WaitFor(apiService)
+    .WithExternalHttpEndpoints();
 
 builder.Build().Run();
