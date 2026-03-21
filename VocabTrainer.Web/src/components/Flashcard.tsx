@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { VocabEntryDto, NounDto } from '../api/types';
 import { GenderLabels } from '../api/types';
 import './Flashcard.css';
@@ -15,6 +15,14 @@ function isNoun(entry: VocabEntryDto): entry is NounDto {
 
 export default function Flashcard({ entry, index, total }: FlashcardProps) {
     const [flipped, setFlipped] = useState(false);
+
+    useEffect(() => {
+        function handleKey(e: KeyboardEvent) {
+            if (e.key === 'Enter') setFlipped(f => !f);
+        }
+        globalThis.addEventListener('keydown', handleKey);
+        return () => globalThis.removeEventListener('keydown', handleKey);
+    }, []);
 
     const genderArticle = isNoun(entry) ? GenderLabels[entry.gender] : null;
 

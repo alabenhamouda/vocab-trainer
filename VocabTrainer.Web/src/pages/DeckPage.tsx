@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router';
 import { getDeckVocab } from '../api/client';
 import type { VocabEntryDto } from '../api/types';
@@ -9,31 +9,63 @@ import AddCourseModal from '../components/AddCourseModal';
 import Modal from '../components/Modal';
 import './DeckPage.css';
 
+const PAGE_SIZE = 100;
+
 export default function DeckPage() {
     const { deckId } = useParams<{ deckId: string }>();
     const [entries, setEntries] = useState<VocabEntryDto[]>([]);
+    const [totalCount, setTotalCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [infoExpanded, setInfoExpanded] = useState(false);
     const [courseModalOpen, setCourseModalOpen] = useState(false);
     const [comingSoonModal, setComingSoonModal] = useState<string | null>(null);
+    const abortRef = useRef<AbortController | null>(null);
 
     const loadVocab = useCallback(async () => {
         if (!deckId) return;
+
+        abortRef.current?.abort();
+        const abort = new AbortController();
+        abortRef.current = abort;
+
         try {
             setLoading(true);
-            const result = await getDeckVocab(deckId, 1, 100);
-            setEntries(result.items);
+            setEntries([]);
+            setTotalCount(null);
+
+            let page = 1;
+            let hasNext = true;
+
+            while (hasNext) {
+                if (abort.signal.aborted) return;
+
+                const result = await getDeckVocab(deckId, page, PAGE_SIZE);
+
+                if (abort.signal.aborted) return;
+
+                setEntries(prev => [...prev, ...result.items]);
+                setTotalCount(result.totalCount);
+                hasNext = result.hasNextPage;
+                page++;
+
+                if (page === 2) setLoading(false);
+            }
+
             setError(null);
         } catch (e) {
+            if (abort.signal.aborted) return;
             setError(e instanceof Error ? e.message : 'Failed to load vocabulary');
         } finally {
-            setLoading(false);
+            if (!abort.signal.aborted) setLoading(false);
         }
     }, [deckId]);
 
-    useEffect(() => { loadVocab(); }, [loadVocab]);
+    useEffect(() => {
+        loadVocab();
+        return () => { abortRef.current?.abort(); };
+    }, [loadVocab]);
 
     const prev = useCallback(() => {
         setCurrentIndex(i => (i > 0 ? i - 1 : entries.length - 1));
@@ -97,7 +129,7 @@ export default function DeckPage() {
                 </button>
                 {infoExpanded && (
                     <div className="info-content">
-                        <p><strong>Total entries:</strong> {entries.length}</p>
+                        <p><strong>Total entries:</strong> {totalCount ?? entries.length}{totalCount !== null && entries.length < totalCount && ` (${entries.length} loaded…)`}</p>
                         <p>More details coming soon — review stats, lesson list, and progress tracking.</p>
                     </div>
                 )}
