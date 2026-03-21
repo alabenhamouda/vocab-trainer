@@ -1,12 +1,17 @@
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router';
+import HomePage from './pages/HomePage';
+import DeckPage from './pages/DeckPage';
+import './App.css';
 
 function App() {
     return (
-        <main>
-            <h1>VocabTrainer</h1>
-            <p>Welcome to VocabTrainer — your German vocabulary learning companion.</p>
-        </main>
-    )
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/decks/:deckId" element={<DeckPage />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
-export default App
+export default App;

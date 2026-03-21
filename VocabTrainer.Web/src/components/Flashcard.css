@@ -1,0 +1,127 @@
+.flashcard-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.flashcard-counter {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.flashcard {
+  width: 100%;
+  max-width: 420px;
+  height: 240px;
+  perspective: 800px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.flashcard:focus-visible {
+  outline: 2px solid #646cff;
+  outline-offset: 4px;
+  border-radius: 16px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  gap: 0.5rem;
+  border: 1px solid #333;
+}
+
+.flashcard-front {
+  background: #1a1a2e;
+}
+
+.flashcard-back {
+  background: #16213e;
+  transform: rotateY(180deg);
+}
+
+.term {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.gender-badge {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #646cff;
+  text-transform: lowercase;
+}
+
+.plural {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.type-badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(100, 108, 255, 0.15);
+  color: #646cff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.definition {
+  font-size: 1.15rem;
+  margin: 0;
+  text-align: center;
+}
+
+.translation {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin: 0;
+}
+
+.example {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #888;
+  margin: 0;
+}
+
+.flip-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.75rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .flashcard-front {
+    background: #f0f0f5;
+    border-color: #ddd;
+  }
+
+  .flashcard-back {
+    background: #e8ecf5;
+    border-color: #ddd;
+  }
+}

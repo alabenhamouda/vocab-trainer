@@ -81,5 +81,23 @@ public static class DeckEndpoints
                 return Results.NoContent();
             }
         );
+
+        deckGroup.MapPost(
+            "/{deckId:guid}/courses",
+            async (ISender sender, Guid deckId, [FromBody] AddCoursesToDeckRequest request) =>
+            {
+                try
+                {
+                    await sender.Send(new AddCoursesToDeckCommand(deckId, request.CourseIds));
+                    return Results.NoContent();
+                }
+                catch (DeckNotFoundException ex)
+                {
+                    return Results.NotFound(ex.Message);
+                }
+            }
+        );
     }
 }
+
+public record AddCoursesToDeckRequest(List<Guid> CourseIds);

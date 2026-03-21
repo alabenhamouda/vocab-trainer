@@ -1,0 +1,87 @@
+.course-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.selection-count {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.course-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.course-item {
+  border-bottom: 1px solid #2a2a3a;
+}
+
+.course-item:last-child {
+  border-bottom: none;
+}
+
+.course-item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.25rem;
+  cursor: pointer;
+}
+
+.course-item label:hover {
+  background: rgba(100, 108, 255, 0.05);
+}
+
+.course-item input[type='checkbox'] {
+  margin-top: 0.2rem;
+  accent-color: #646cff;
+}
+
+.course-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.course-title {
+  font-weight: 500;
+}
+
+.course-desc {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #2a2a3a;
+}
+
+@media (prefers-color-scheme: light) {
+  .course-item {
+    border-color: #eee;
+  }
+
+  .course-item label:hover {
+    background: rgba(100, 108, 255, 0.05);
+  }
+
+  .modal-actions {
+    border-color: #eee;
+  }
+}

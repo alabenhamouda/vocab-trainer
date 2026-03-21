@@ -1,0 +1,88 @@
+.deck-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.deck-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.flashcard-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-section {
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+}
+
+.info-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.info-toggle:hover {
+  color: #646cff;
+}
+
+.chevron {
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.chevron.open {
+  transform: rotate(90deg);
+}
+
+.info-content {
+  padding: 0.5rem 0;
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.info-content p {
+  margin: 0.25rem 0;
+}
+
+@media (prefers-color-scheme: light) {
+  .info-section {
+    border-color: #ddd;
+  }
+
+  .info-content {
+    color: #555;
+  }
+}
