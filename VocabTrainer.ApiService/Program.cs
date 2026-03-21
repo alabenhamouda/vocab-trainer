@@ -32,6 +32,7 @@ app.MapGet("/", () => "VocabTrainer API is running.").ExcludeFromDescription();
 app.MapVocabEndpoints();
 app.MapCourseEndpoints();
 app.MapLessonEndpoints();
+app.MapDeckEndpoints();
 
 app.MapDefaultEndpoints();
 
