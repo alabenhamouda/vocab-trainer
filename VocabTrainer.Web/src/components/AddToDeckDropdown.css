@@ -5,40 +5,39 @@
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   right: 0;
   list-style: none;
   margin: 0;
-  padding: 0.25rem 0;
-  background: #1e1e2e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  padding: 0.3rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   z-index: 10;
-  min-width: 160px;
+  min-width: 170px;
+  animation: slideDown 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .dropdown-menu li button {
   display: block;
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 0.85rem;
   background: none;
   border: none;
-  color: inherit;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
   text-align: left;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .dropdown-menu li button:hover {
-  background: rgba(100, 108, 255, 0.12);
-  color: #646cff;
-}
-
-@media (prefers-color-scheme: light) {
-  .dropdown-menu {
-    background: #fff;
-    border-color: #ddd;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  }
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
 }

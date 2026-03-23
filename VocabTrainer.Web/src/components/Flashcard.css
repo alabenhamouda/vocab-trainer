@@ -3,34 +3,31 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  gap: var(--space-md);
 }
 
-.flashcard-counter {
-  font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 0.75rem;
-}
-
+/* Card */
 .flashcard {
   width: 100%;
-  max-width: 420px;
-  height: 240px;
-  perspective: 800px;
+  max-width: 440px;
+  min-height: 280px;
+  perspective: 1000px;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .flashcard:focus-visible {
-  outline: 2px solid #646cff;
-  outline-offset: 4px;
-  border-radius: 16px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+  border-radius: var(--radius-xl);
 }
 
 .flashcard-inner {
   position: relative;
   width: 100%;
-  height: 100%;
-  transition: transform 0.5s;
+  min-height: 280px;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
 }
 
@@ -43,158 +40,220 @@
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 16px;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  gap: 0.5rem;
-  border: 1px solid #333;
+  padding: var(--space-xl) var(--space-lg);
+  gap: var(--space-sm);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
 }
 
+/* Front */
 .flashcard-front {
-  background: #1a1a2e;
+  background:
+    linear-gradient(135deg, var(--color-bg-surface) 0%, var(--color-bg-elevated) 100%);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal);
 }
 
+.flashcard:hover .flashcard-front {
+  box-shadow: var(--shadow-card-hover), var(--shadow-glow);
+}
+
+/* Back */
 .flashcard-back {
-  background: #16213e;
+  background:
+    linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-surface) 100%);
   transform: rotateY(180deg);
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-accent-border);
+}
+
+/* Card content */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
 }
 
 .term {
-  font-size: 1.6rem;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .gender-badge {
-  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
   font-weight: 500;
-  color: #646cff;
-  text-transform: lowercase;
+  font-style: italic;
+  color: var(--color-gold);
 }
 
 .plural {
-  font-size: 0.9rem;
-  color: #999;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
 }
 
 .type-badge {
-  font-size: 0.7rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  background: rgba(100, 108, 255, 0.15);
-  color: #646cff;
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--color-accent-border);
 }
 
+.flip-hint {
+  position: absolute;
+  bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* Back content */
 .definition {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
+  font-weight: 500;
   margin: 0;
   text-align: center;
+  line-height: 1.5;
 }
 
 .translation {
   font-size: 0.95rem;
-  color: #aaa;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 .example {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-style: italic;
-  color: #888;
+  color: var(--color-text-muted);
+  margin: 0;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* Review flip hint */
+.review-flip-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   margin: 0;
 }
 
-.flip-hint {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 0.75rem;
-}
+/* ─── Confidence Buttons ─── */
 
 .confidence-buttons {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.75rem;
   width: 100%;
-  max-width: 420px;
-  justify-content: center;
+  max-width: 440px;
+  animation: fadeInUp 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .confidence-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: transparent;
+  gap: 0.2rem;
+  padding: 0.6rem 0.5rem 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
   cursor: pointer;
   flex: 1;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .confidence-btn:hover {
-  filter: brightness(1.15);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.confidence-btn:active {
+  transform: translateY(0);
 }
 
 .confidence-label {
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .confidence-hint {
-  font-size: 0.7rem;
-  opacity: 0.7;
+  font-size: 0.65rem;
+  opacity: 0.6;
+}
+
+.confidence-btn kbd {
   margin-top: 0.15rem;
 }
 
+/* Confidence variants */
 .confidence-again {
-  border-color: #e74c4c;
-  color: #e74c4c;
+  border-color: rgba(207, 85, 85, 0.2);
+  color: var(--color-confidence-again);
 }
 
 .confidence-again:hover {
-  background: rgba(231, 76, 76, 0.1);
+  background: var(--color-confidence-again-bg);
+  border-color: rgba(207, 85, 85, 0.35);
 }
 
 .confidence-hard {
-  border-color: #e7a04c;
-  color: #e7a04c;
+  border-color: rgba(212, 168, 67, 0.2);
+  color: var(--color-confidence-hard);
 }
 
 .confidence-hard:hover {
-  background: rgba(231, 160, 76, 0.1);
+  background: var(--color-confidence-hard-bg);
+  border-color: rgba(212, 168, 67, 0.35);
 }
 
 .confidence-good {
-  border-color: #646cff;
-  color: #646cff;
+  border-color: rgba(59, 181, 165, 0.2);
+  color: var(--color-confidence-good);
 }
 
 .confidence-good:hover {
-  background: rgba(100, 108, 255, 0.1);
+  background: var(--color-confidence-good-bg);
+  border-color: rgba(59, 181, 165, 0.35);
 }
 
 .confidence-easy {
-  border-color: #4ce77a;
-  color: #4ce77a;
+  border-color: rgba(92, 184, 122, 0.2);
+  color: var(--color-confidence-easy);
 }
 
 .confidence-easy:hover {
-  background: rgba(76, 231, 122, 0.1);
-}
-
-@media (prefers-color-scheme: light) {
-  .flashcard-front {
-    background: #f0f0f5;
-    border-color: #ddd;
-  }
-
-  .flashcard-back {
-    background: #e8ecf5;
-    border-color: #ddd;
-  }
+  background: var(--color-confidence-easy-bg);
+  border-color: rgba(92, 184, 122, 0.35);
 }
