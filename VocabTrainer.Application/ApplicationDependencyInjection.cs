@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using VocabTrainer.Application.Common;
+using VocabTrainer.Domain.Models;
 
 namespace VocabTrainer.Application;
 
@@ -17,6 +18,8 @@ public static class ApplicationDependencyInjection
         {
             cfg.RegisterServicesFromAssembly(typeof(ApplicationDependencyInjection).Assembly);
         });
+
+        services.AddSingleton<IReviewStrategy, FixedIntervalReviewStrategy>();
 
         return services;
     }

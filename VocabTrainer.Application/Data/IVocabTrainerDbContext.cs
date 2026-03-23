@@ -13,6 +13,7 @@ public interface IVocabTrainerDbContext
     DbSet<Deck> Decks { get; }
     DbSet<DeckEntry> DeckEntries { get; }
     DbSet<DeckLesson> DeckLessons { get; }
+    DbSet<Review> Reviews { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

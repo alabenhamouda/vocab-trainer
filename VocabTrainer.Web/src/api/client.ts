@@ -1,4 +1,4 @@
-import type { CourseDto, DeckDto, PaginatedList, VocabEntryDto } from './types';
+import type { CourseDto, DeckDto, PaginatedList, ReviewVocabEntryDto, VocabEntryDto } from './types';
 
 const BASE = '/api';
 
@@ -43,6 +43,31 @@ export async function addCoursesToDeck(deckId: string, courseIds: string[]): Pro
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ courseIds }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || res.statusText);
+  }
+}
+
+export async function getDueReviewEntries(
+  deckId: string,
+  page = 1,
+  pageSize = 100,
+): Promise<PaginatedList<ReviewVocabEntryDto>> {
+  const res = await fetch(`${BASE}/decks/${deckId}/review?page=${page}&pageSize=${pageSize}`);
+  return handleResponse(res);
+}
+
+export async function recordReview(
+  deckId: string,
+  vocabEntryId: string,
+  confidenceLevel: number,
+): Promise<void> {
+  const res = await fetch(`${BASE}/decks/${deckId}/vocab/${vocabEntryId}/review`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ confidenceLevel }),
   });
   if (!res.ok) {
     const text = await res.text();

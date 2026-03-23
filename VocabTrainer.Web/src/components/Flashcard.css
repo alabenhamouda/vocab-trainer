@@ -114,6 +114,79 @@
   margin-top: 0.75rem;
 }
 
+.confidence-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 420px;
+  justify-content: center;
+}
+
+.confidence-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: transparent;
+  cursor: pointer;
+  flex: 1;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.confidence-btn:hover {
+  filter: brightness(1.15);
+}
+
+.confidence-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.confidence-hint {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-top: 0.15rem;
+}
+
+.confidence-again {
+  border-color: #e74c4c;
+  color: #e74c4c;
+}
+
+.confidence-again:hover {
+  background: rgba(231, 76, 76, 0.1);
+}
+
+.confidence-hard {
+  border-color: #e7a04c;
+  color: #e7a04c;
+}
+
+.confidence-hard:hover {
+  background: rgba(231, 160, 76, 0.1);
+}
+
+.confidence-good {
+  border-color: #646cff;
+  color: #646cff;
+}
+
+.confidence-good:hover {
+  background: rgba(100, 108, 255, 0.1);
+}
+
+.confidence-easy {
+  border-color: #4ce77a;
+  color: #4ce77a;
+}
+
+.confidence-easy:hover {
+  background: rgba(76, 231, 122, 0.1);
+}
+
 @media (prefers-color-scheme: light) {
   .flashcard-front {
     background: #f0f0f5;

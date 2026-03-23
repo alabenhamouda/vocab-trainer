@@ -44,3 +44,17 @@ export const GenderLabels: Record<number, string> = {
   2: 'das',
   3: 'der/die',
 };
+
+export enum ConfidenceLevel {
+  Again = 0,
+  Hard = 1,
+  Good = 2,
+  Easy = 3,
+}
+
+export interface ReviewVocabEntryDto {
+  entry: VocabEntryDto;
+  confidenceLevel: number | null;
+  lastReviewedAt: string | null;
+  nextReviewAt: string | null;
+}

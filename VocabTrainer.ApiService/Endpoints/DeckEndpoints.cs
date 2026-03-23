@@ -3,6 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VocabTrainer.Application.Decks.Commands;
 using VocabTrainer.Application.Decks.Queries;
+using VocabTrainer.Application.Reviews.Commands;
+using VocabTrainer.Application.Reviews.Queries;
+using VocabTrainer.Domain.Enums;
 
 namespace VocabTrainer.ApiService.Endpoints;
 
@@ -97,7 +100,43 @@ public static class DeckEndpoints
                 }
             }
         );
+
+        deckGroup.MapGet(
+            "/{deckId:guid}/review",
+            async (ISender sender, Guid deckId, int page = 1, int pageSize = 100) =>
+            {
+                try
+                {
+                    var entries = await sender.Send(
+                        new GetDueReviewEntriesQuery(deckId, page, pageSize)
+                    );
+                    return Results.Ok(entries);
+                }
+                catch (ValidationException ex)
+                {
+                    return Results.ValidationProblem(ex.ToValidationErrors());
+                }
+            }
+        );
+
+        deckGroup.MapPost(
+            "/{deckId:guid}/vocab/{vocabEntryId:guid}/review",
+            async (
+                ISender sender,
+                Guid deckId,
+                Guid vocabEntryId,
+                [FromBody] RecordReviewRequest request
+            ) =>
+            {
+                await sender.Send(
+                    new RecordReviewCommand(deckId, vocabEntryId, request.ConfidenceLevel)
+                );
+                return Results.NoContent();
+            }
+        );
     }
 }
 
 public record AddCoursesToDeckRequest(List<Guid> CourseIds);
+
+public record RecordReviewRequest(ConfidenceLevel ConfidenceLevel);

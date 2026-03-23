@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import type { VocabEntryDto, NounDto } from '../api/types';
-import { GenderLabels } from '../api/types';
+import { GenderLabels, ConfidenceLevel } from '../api/types';
 import './Flashcard.css';
 
 interface FlashcardProps {
     entry: VocabEntryDto;
     index: number;
     total: number;
+    onReview?: (level: ConfidenceLevel) => void;
 }
+
+const confidenceButtons = [
+    { level: ConfidenceLevel.Again, label: 'Again', hint: '< 1 min', className: 'confidence-again' },
+    { level: ConfidenceLevel.Hard, label: 'Hard', hint: '< 24h', className: 'confidence-hard' },
+    { level: ConfidenceLevel.Good, label: 'Good', hint: '2 days', className: 'confidence-good' },
+    { level: ConfidenceLevel.Easy, label: 'Easy', hint: '1 week', className: 'confidence-easy' },
+];
 
 function isNoun(entry: VocabEntryDto): entry is NounDto {
     return entry.type === 'Noun';
 }
 
-export default function Flashcard({ entry, index, total }: FlashcardProps) {
+export default function Flashcard({ entry, index, total, onReview }: FlashcardProps) {
     const [flipped, setFlipped] = useState(false);
 
     useEffect(() => {
@@ -57,7 +65,22 @@ export default function Flashcard({ entry, index, total }: FlashcardProps) {
                     </div>
                 </div>
             </div>
-            <p className="flip-hint">Click to flip</p>
+            {onReview && flipped ? (
+                <div className="confidence-buttons">
+                    {confidenceButtons.map(btn => (
+                        <button
+                            key={btn.level}
+                            className={`confidence-btn ${btn.className}`}
+                            onClick={() => onReview(btn.level)}
+                        >
+                            <span className="confidence-label">{btn.label}</span>
+                            <span className="confidence-hint">{btn.hint}</span>
+                        </button>
+                    ))}
+                </div>
+            ) : (
+                <p className="flip-hint">Click to flip</p>
+            )}
         </div>
     );
 }

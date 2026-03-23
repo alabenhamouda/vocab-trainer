@@ -11,6 +11,12 @@
   margin-bottom: 1.5rem;
 }
 
+.deck-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .back-link {
   color: #646cff;
   text-decoration: none;

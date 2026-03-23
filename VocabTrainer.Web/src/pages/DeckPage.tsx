@@ -96,7 +96,10 @@ export default function DeckPage() {
         <div className="deck-page">
             <nav className="deck-nav">
                 <Link to="/" className="back-link">← Back to decks</Link>
-                <AddToDeckDropdown onSelect={handleAddOption} />
+                <div className="deck-nav-actions">
+                    <Link to={`/decks/${deckId}/review`} className="btn btn-primary">Start Review</Link>
+                    <AddToDeckDropdown onSelect={handleAddOption} />
+                </div>
             </nav>
 
             {entries.length === 0 ? (

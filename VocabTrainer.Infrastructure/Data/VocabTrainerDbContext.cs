@@ -16,6 +16,7 @@ public class VocabTrainerDbContext(DbContextOptions<VocabTrainerDbContext> optio
     public DbSet<Deck> Decks => Set<Deck>();
     public DbSet<DeckEntry> DeckEntries => Set<DeckEntry>();
     public DbSet<DeckLesson> DeckLessons => Set<DeckLesson>();
+    public DbSet<Review> Reviews => Set<Review>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -93,6 +94,23 @@ public class VocabTrainerDbContext(DbContextOptions<VocabTrainerDbContext> optio
                 .HasOne<Lesson>()
                 .WithMany()
                 .HasForeignKey(dl => dl.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // --- Review ---
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.DeckId, e.VocabEntryId }).IsUnique();
+            entity
+                .HasOne<Deck>()
+                .WithMany()
+                .HasForeignKey(r => r.DeckId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity
+                .HasOne<VocabEntry>()
+                .WithMany()
+                .HasForeignKey(r => r.VocabEntryId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
