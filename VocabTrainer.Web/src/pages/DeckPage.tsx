@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router';
 import { getDeckVocab } from '../api/client';
 import type { VocabEntryDto } from '../api/types';
 import Flashcard from '../components/Flashcard';
+import MasteryChart from '../components/MasteryChart';
 import AddToDeckDropdown from '../components/AddToDeckDropdown';
 import type { AddOption } from '../components/AddToDeckDropdown';
 import AddCourseModal from '../components/AddCourseModal';
@@ -106,6 +107,8 @@ export default function DeckPage() {
                     <AddToDeckDropdown onSelect={handleAddOption} />
                 </div>
             </nav>
+
+            {deckId && <MasteryChart deckId={deckId} />}
 
             {entries.length === 0 ? (
                 <div className="empty-state">

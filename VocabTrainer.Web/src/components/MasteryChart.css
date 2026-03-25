@@ -1,0 +1,77 @@
+.mastery-chart {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 0.05s;
+  margin-bottom: var(--space-xl);
+}
+
+.mastery-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.mastery-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.mastery-total {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Vertical Bars ─── */
+
+.mastery-bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: var(--space-sm);
+}
+
+.mastery-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs, 0.25rem);
+  flex: 1;
+}
+
+.mastery-bar-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.mastery-bar-track {
+  width: 100%;
+  max-width: 48px;
+  height: 100px;
+  background: var(--color-border-subtle);
+  border-radius: var(--radius-md, 6px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.mastery-bar-fill {
+  width: 100%;
+  border-radius: var(--radius-md, 6px);
+  transition: height var(--transition-slow);
+  min-height: 3px;
+}
+
+.mastery-bar-label {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+}

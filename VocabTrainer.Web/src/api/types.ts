@@ -58,3 +58,12 @@ export interface ReviewVocabEntryDto {
   lastReviewedAt: string | null;
   nextReviewAt: string | null;
 }
+
+export interface DeckReviewStatsDto {
+  totalEntries: number;
+  new: number;
+  again: number;
+  hard: number;
+  good: number;
+  easy: number;
+}

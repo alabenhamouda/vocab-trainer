@@ -1,4 +1,4 @@
-import type { CourseDto, DeckDto, PaginatedList, ReviewVocabEntryDto, VocabEntryDto } from './types';
+import type { CourseDto, DeckDto, DeckReviewStatsDto, PaginatedList, ReviewVocabEntryDto, VocabEntryDto } from './types';
 
 const BASE = '/api';
 
@@ -73,4 +73,9 @@ export async function recordReview(
     const text = await res.text();
     throw new Error(text || res.statusText);
   }
+}
+
+export async function getDeckReviewStats(deckId: string): Promise<DeckReviewStatsDto> {
+  const res = await fetch(`${BASE}/decks/${deckId}/review/stats`);
+  return handleResponse(res);
 }

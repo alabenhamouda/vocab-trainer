@@ -119,6 +119,15 @@ public static class DeckEndpoints
             }
         );
 
+        deckGroup.MapGet(
+            "/{deckId:guid}/review/stats",
+            async (ISender sender, Guid deckId) =>
+            {
+                var stats = await sender.Send(new GetDeckReviewStatsQuery(deckId));
+                return Results.Ok(stats);
+            }
+        );
+
         deckGroup.MapPost(
             "/{deckId:guid}/vocab/{vocabEntryId:guid}/review",
             async (
